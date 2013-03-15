@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-recess');
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-coffee');
 
 	var recessOptions = function(bool) {
 		bool = ((typeof bool === 'undefined')? false : bool);
@@ -29,38 +30,34 @@ module.exports = function(grunt) {
 			base: 'public/'
 		},
 		files: {
-			js: [
-				'assets/raw/twitter-bootstrap/js/bootstrap-affix.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-alert.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-button.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-carousel.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-collapse.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-dropdown.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-modal.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-tooltip.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-popover.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-scrollspy.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-tab.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-transition.js',
-				'assets/raw/twitter-bootstrap/js/bootstrap-typeahead.js',
-				'assets/js/*.js',
-			],
 			less: [
 				'assets/less/base.less'
+			],
+			coffee: [
+				'assets/coffee/*.coffee'
 			],
 			html: [
 				'*.html'
 			]
 		},
+        coffee: {
+            app: {
+                    src: '<config:files.coffee>',
+                    dest: 'public/assets/js',
+                    options: {
+                            bare: true
+                    }
+            }
+        },
 		concat: {
 			js: {
-				src: '<config:files.js>',
+				src: 'public/assets/js/*.js',
 				dest: 'public/assets/app.js'
 			}
 		},
 		min: {
 			js: {
-				src: '<config:files.js>',
+				src: 'public/assets/js/*.js',
 				dest: 'public/assets/app.js'
 			}
 		},
@@ -78,7 +75,7 @@ module.exports = function(grunt) {
 		},
 		shell: {
 			sync: {
-	            command: 'rm -rf public/; mkdir -p public/assets/font; mkdir -p public/assets/img; cp assets/raw/font-awesome/font/* public/assets/font/; cp assets/raw/twitter-bootstrap/img/* public/assets/img/; cp *.html public/; cp assets/img/* public/assets/img/; cp CNAME public/',
+	            command: 'rm -rf public/; mkdir -p public/assets/font; mkdir -p public/assets/img; mkdir -p public/assets/js; cp assets/raw/font-awesome/font/* public/assets/font/; cp assets/raw/twitter-bootstrap/img/* public/assets/img/; cp *.html public/; cp assets/img/* public/assets/img/; cp CNAME public/',
 	            stdout: true
 			},
 			deploy: {
@@ -87,17 +84,21 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
+			img: {
+				files: ['assets/img/*'],
+				tasks: 'shell:sync coffee concat recess:max'
+			},
 			less: {
 				files: ['assets/less/*.less', 'assets/less/**/*.less'],
-				tasks: 'shell:sync concat recess:max'
+				tasks: 'shell:sync coffee concat recess:max'
 			},
-			js: {
-				files: '<config:files.js>',
-				tasks: 'shell:sync concat recess:max'
+			coffee: {
+				files: '<config:files.coffee>',
+				tasks: 'shell:sync coffee concat recess:max'
 			},
 			html: {
 				files: '<config:files.html>',
-				tasks: 'shell:sync concat recess:max'
+				tasks: 'shell:sync coffee concat recess:max'
 			}
 		},
 		jshint: {
@@ -119,6 +120,6 @@ module.exports = function(grunt) {
 	});
 
 	// Default task.
-	grunt.registerTask('default', 'shell:sync concat recess:max server watch');
-  	grunt.registerTask('deploy', 'shell:sync min recess:min shell:deploy');
+	grunt.registerTask('default', 'shell:sync coffee concat recess:max server watch');
+  	grunt.registerTask('deploy', 'shell:sync coffee min recess:min shell:deploy');
 };
