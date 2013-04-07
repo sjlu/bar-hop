@@ -2,21 +2,36 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)" />
 	<meta name="description" content="We'll tell you which bars to hop to.">
 	<meta name="keywords" content="bars, drinks">
 
 	<title>Bar Hop</title>
 
+	<link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/img/appicon.png"/>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
 	<link href="assets/style.css" rel="stylesheet" />
 </head>
 <body>
-	<div class="container">
+	<div id="slider" class="swipe">
+		<div class="swipe-wrap">
+			<div class="blue">
+				<div class="inner">rawr</div>
+			</div>
+			<div class="red">
+				<div class="inner">rawr</div>
+			</div>
+		</div>
 	</div>
 
-   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.7.0/lodash.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.7.0/lodash.min.js"></script>
+	<script src="https://raw.github.com/bradbirdsall/Swipe/master/swipe.js"></script>
 	<script src="assets/app.js"></script>
 </body>
 </html>

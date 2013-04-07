@@ -33,3 +33,13 @@ $(document).ready ->
 		foursquare.byLocation(d.lat, d.lng, postFoursquare)
 
 	location = new Location(postLocation)
+
+	window.mySwipe = new Swipe document.getElementById('slider'),
+		startSlide: 0
+		speed: 300
+		auto: 3000
+		continuous: true
+		disableScroll: false
+		stopPropagation: false
+		callback: (index, elem) ->
+		transitionEnd: (index, elem) ->
