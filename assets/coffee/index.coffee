@@ -80,7 +80,7 @@ $(document).ready ->
 		places.push best;
 
 		recurse++;
-		if recurse < 3
+		if recurse < 2
 			foursquare.byVenue(best.venue, postFoursquare)
 		else
 			render()

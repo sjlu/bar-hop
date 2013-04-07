@@ -2,14 +2,39 @@ class Foursquare
 	category: '4bf58dd8d48988d116941735'
 	url: 'https://api.foursquare.com/v2/venues'
 	oauth: 'ZN1EU0HVWFSKKSEAOYI4OZ3VWKZISEOA5U2TLBAIGJYIXLLB'
-	id: 'JT0GWZDB0MJPLMCYXVGGPSO5PKVWHU1KP5CJBWYTHOTNKRFM'
-	secret: 'VIHV5SJV0GEQENADWSLWDS3O2ET2GMCUCLHELFHYKUV0G2SY'
-	# id: 'LHTVMBRCPPSHVARXE1BZ5L1QH23TJAJFTUG2S3HDMC04Y5ZY'
-	# secret: 'DWEWRSKTGITH2LNFG4DEWZZ0MJDNMGKVIROALDMTWR22S4ZO'
+	tokens: [
+		{
+			id: 'JT0GWZDB0MJPLMCYXVGGPSO5PKVWHU1KP5CJBWYTHOTNKRFM'
+			secret: 'VIHV5SJV0GEQENADWSLWDS3O2ET2GMCUCLHELFHYKUV0G2SY'
+		},
+		{
+			id: '0GN4ZBT1UKVRMJEUDRKALEX1K1SKE5B0YCGOK1ASX50Z0N4D'
+			secret: 'LAUGEKOXA5EF0BAEF5EEWECJ5QIT4TWHGUX5TWPRYGFTNAK5'
+		},
+		{
+			id: 'LHTVMBRCPPSHVARXE1BZ5L1QH23TJAJFTUG2S3HDMC04Y5ZY'
+			secret: 'DWEWRSKTGITH2LNFG4DEWZZ0MJDNMGKVIROALDMTWR22S4ZO'
+		},
+		{
+			id: 'B1TY4U1YQJK0GPOE5UYVHWOKG02HKIMJVVQHVMUHITHWQFAU'
+			secret: '040KWJXO1UYPLTCDQ2J14TEAM2KY0V5KS32WYIIGDLKXVIFQ'
+		},
+		{
+			id: '1CPR5PG1YRWPJRR0ZDCNCSOCK4ELVJHAPRQHHEYB15YYDR5H'
+			secret: 'AIHBIUJIEGCL55WKPLCNAZDHJQ0TSVFOUFUF4OHAY5FXVD04'
+		}
+	]
+	key: ""
+
+	constructor: ->
+		token = @tokens[_.random(0, @tokens.length-1)]
+		@key = "client_id=#{token.id}&client_secret=#{token.secret}&v=20130407"
 
 	build: ->
-		"client_id=#{@id}&client_secret=#{@secret}&v=20130407"
-		# "oauth_token=#{@oauth}&v=20130407"
+		@key
+
+	fail: ->
+		$('#error').show()
 
 	byLocation: (lat, lng, handler) ->
 		count = 0
@@ -34,7 +59,7 @@ class Foursquare
 				bars = _.filter bars,
 					(b) ->
 						ratio = b.female / (b.female + b.male)
-						if ratio > 0.40
+						if ratio > 0.35
 							return true
 						return false
 
@@ -44,6 +69,7 @@ class Foursquare
 		$.ajax "#{@url}/search?ll=#{lat},#{lng}&categoryId=#{@category}&#{@build()}",
 			type: "GET"
 			dataType: "json"
+			error: @fail
 			success: (d) =>
 				count = d.response.venues.length
 				places = d.response.venues
@@ -98,6 +124,7 @@ class Foursquare
 		$.ajax "#{@url}/#{venue.id}?#{@build()}",
 			type: "GET"
 			dataType: "json"
+			error: @fail
 			success: (d) ->
 				d = d.response.venue
 				venue.rating = d.rating
@@ -134,6 +161,7 @@ class Foursquare
 		$.ajax "#{@url}/#{venue.id}/photos?sort=popular&limit=500&#{@build()}",
 			type: "GET"
 			dataType: "json"
+			error: @fail
 			success: (d) ->
 				photos = d.response.photos.items
 
@@ -145,6 +173,7 @@ class Foursquare
 		$.ajax "#{@url}/#{venue.id}/tips?sort=popular&limit=500&#{@build()}",
 			type: "GET"
 			dataType: "json"
+			error: @fail
 			success: (d) ->
 				tips = d.response.tips.items
 				process tips
@@ -153,6 +182,7 @@ class Foursquare
 		$.ajax "#{@url}/#{venue.id}/nextvenues?#{@build()}",
 			type: "GET"
 			dataType: "json"
+			error: @fail
 			success: (d) ->
 				next = d.response.nextVenues.items
 				next = _.filter next,
