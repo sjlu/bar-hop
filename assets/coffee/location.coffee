@@ -13,4 +13,8 @@ class Location
 				lat: "40.739022"
 				lng: "-73.98205"
 
+		return handler 
+			lat: "40.739022"
+			lng: "-73.98205"
+
 		navigator.geolocation.getCurrentPosition(successHandler, errorHandler)
