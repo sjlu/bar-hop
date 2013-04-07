@@ -104,14 +104,16 @@ class Foursquare
 
 				if d.hours?
 					venue.open = d.hours.isOpen
-					venue.openUntil = _.find d.hours.timeframes, 
+					openUntil = _.find d.hours.timeframes, 
 						(t) ->
 							if t.includesToday?
 								return true
 							return false
 					# console.log(venue.openUntil)
-					venue.openUntil = venue.openUntil.open[0].renderedTime.split("–")
-					venue.openUntil = venue.openUntil[1]
+					if openUntil.open?
+						openUntil = openUntil.open[0].renderedTime.split("–")
+						openUntil = openUntil[1]
+						venue.openUntil = openUntil
 
 				if d.popular?
 					if not venue.open?

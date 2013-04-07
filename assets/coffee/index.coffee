@@ -5,7 +5,7 @@ $(document).ready ->
 	foursquare = new Foursquare()
 
 	render = ->
-		console.log places
+		# console.log places
 		source = $("#place").html();
 		template = Handlebars.compile(source);
 		$('#loading').hide()	
@@ -24,6 +24,9 @@ $(document).ready ->
 				price += "$"
 				count++
 
+			popular = ""
+			if place.venue.popularHours?
+				popular = place.venue.popularHours.replace("-", " to ")
 
 			context = 
 				image: place.venue.photo
@@ -35,9 +38,9 @@ $(document).ready ->
 				rating: place.venue.rating
 				open: open
 				price: price
-				popular: place.venue.popularHours.replace("-", " to ")
+				popular: popular
 
-			console.log context
+			# console.log context
 			$('.swipe-wrap').append(template(context))
 
 		bullets = $('#nav li');
