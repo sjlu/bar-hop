@@ -110,7 +110,7 @@ class Foursquare
 								return true
 							return false
 					# console.log(venue.openUntil)
-					if openUntil.open?
+					if openUntil? and openUntil.open?
 						openUntil = openUntil.open[0].renderedTime.split("–")
 						openUntil = openUntil[1]
 						venue.openUntil = openUntil

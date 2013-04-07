@@ -5,7 +5,7 @@ $(document).ready ->
 	foursquare = new Foursquare()
 
 	render = ->
-		# console.log places
+		console.log places
 		source = $("#place").html();
 		template = Handlebars.compile(source);
 		$('#loading').hide()	
